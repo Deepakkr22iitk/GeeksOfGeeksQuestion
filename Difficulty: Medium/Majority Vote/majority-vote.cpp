@@ -8,77 +8,107 @@ class Solution {
   public:
     // Function to find the majority elements in the array
     vector<int> findMajority(vector<int>& nums) {
-        // int n=nums.size();
-        // map<int,int> freq;
+        int n=nums.size();
+        map<int,int> freq;
         
-        // set<int> done;
-        // vector<int> ans;
-        // for(int i=0;i<n;i++)
-        // {
-        //     // if(freq[nums[i]]==n/3)
-        //     // {
-        //     //     ans.push_back(nums[i]);
-        //     //     done.insert(nums[i]);
-        //     // }
-        //     freq[nums[i]]++;
-        // }
-        
-        // for(auto &it : freq)
-        // {
-        //     if(it.second>n/3) ans.push_back(it.first);
-        // }
-        
-        // if(ans.size()==0) ans.push_back(-1);
-        
-        // return ans;
-        
-        int count1 = 0,count2 = 0;
-        int major1 = nums[0],major2 = nums[0];
-        int n = nums.size();
-        
-        for(int i=0;i<nums.size();i++){
-            if(major1 == nums[i]){
-                count1++;
-            }
-            else if(major2 == nums[i]){
-                count2++;
-            }
-            else if(count1 == 0){
-                major1 = nums[i];
-                count1 = 1;
-            }
-            else if(count2 == 0){
-                major2 = nums[i];
-                count2 = 1;
-            }
-            else{
-                count1--;
-                count2--;
-            }
-        }
-        
+        set<int> done;
         vector<int> ans;
-        int freq1 = 0,freq2 = 0;
-        for(int i=0;i<nums.size();i++){
-            if(nums[i] == major1){
-                freq1++;
-            }
-            else if(nums[i] == major2){
-                freq2++;
-            }
+        for(int i=0;i<n;i++)
+        {
+            // if(freq[nums[i]]==n/3)
+            // {
+            //     ans.push_back(nums[i]);
+            //     done.insert(nums[i]);
+            // }
+            freq[nums[i]]++;
         }
         
-        if(freq1 > n/3){
-            ans.push_back(major1);
-        }
-        if(freq2 > n/3){
-            ans.push_back(major2);
+        for(auto &it : freq)
+        {
+            if(it.second>n/3) ans.push_back(it.first);
         }
         
-        if(ans.size() == 0){
-            return {-1};
-        }
+        if(ans.size()==0) ans.push_back(-1);
+        sort(ans.begin(),ans.end());
+        // else if(ans.size()==2)
+        // {
+        //     int first=-1;
+        //     int flag=0;
+        //     int idx=0;
+        //     while(flag==0)
+        //     {
+        //         if(nums[idx]==ans[0])
+        //         {
+        //             first=1;
+        //             flag=1;
+        //             // break;
+        //         }
+        //         else if(nums[idx]==ans[1])
+        //         {
+        //             first=2;
+        //             flag=1;
+        //             // break;
+        //         }
+        //         idx++;
+        //     }
+            
+        //     if(flag==2)
+        //     {
+        //         int temp=ans[0];
+        //         ans[0]=ans[1];
+        //         ans[1]=ans[0];
+        //     }
+        // }
+        
         return ans;
+        
+        // int count1 = 0,count2 = 0;
+        // int major1 = nums[0],major2 = nums[0];
+        // int n = nums.size();
+        
+        // for(int i=0;i<nums.size();i++){
+        //     if(major1 == nums[i]){
+        //         count1++;
+        //     }
+        //     else if(major2 == nums[i]){
+        //         count2++;
+        //     }
+        //     else if(count1 == 0){
+        //         major1 = nums[i];
+        //         count1 = 1;
+        //     }
+        //     else if(count2 == 0){
+        //         major2 = nums[i];
+        //         count2 = 1;
+        //     }
+        //     else{
+        //         count1--;
+        //         count2--;
+        //     }
+        // }
+        
+        // vector<int> ans;
+        // int freq1 = 0,freq2 = 0;
+        // for(int i=0;i<nums.size();i++){
+        //     if(nums[i] == major1){
+        //         freq1++;
+        //     }
+        //     else if(nums[i] == major2){
+        //         freq2++;
+        //     }
+        // }
+        
+        // if(freq1 > n/3){
+        //     ans.push_back(major1);
+        // }
+        // if(freq2 > n/3){
+        //     ans.push_back(major2);
+        // }
+        
+        // if(ans.size() == 0){
+        //     return {-1};
+        // }
+        // return ans;
     }
 };
 
