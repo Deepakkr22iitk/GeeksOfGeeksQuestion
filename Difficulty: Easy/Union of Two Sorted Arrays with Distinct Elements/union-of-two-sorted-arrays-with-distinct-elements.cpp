@@ -12,8 +12,54 @@ class Solution {
     vector<int> findUnion(vector<int> &a, vector<int> &b) {
         // Your code here
         // return vector with correct order of elements
-        vector<int> ans;
+        // int n= a.size();
+        // int m= b.size();
+        // vector<int> arr;
+        // int i=0,j=0,k=0;
+        // while(i<n && j<m){
+        //     if(a[i]==b[j]){
+        //         arr[k]=a[i];
+        //         i++;
+        //         j++;
+        //         k++;
+        //     }
+        //     else if(a[i]>b[j]){
+        //         arr[k]=b[j];
+        //         i++;
+        //         j++;
+        //         k+=2;
+        //     }
+            
+        //     else{
+        //         arr[k]=b[j];
+        //         arr[k+1]=a[i];
+        //         i++;
+        //         j++;
+        //         k+=2;
+        //     }
+        // }
+        
+        
+        // while(j!=m){
+        //     arr[k]=b[j];
+        //     j++;
+        //     k++;
+        // }
+        
+        // while(i!=n){
+        //     arr[k]=a[i];
+        //     i++;
+        //     k++;
+        // }
+        
+        
+        // return arr;
+        
+        
+        
         int i=0,j=0;
+        vector<int> ans;
+        
         while(i<a.size() && j<b.size())
         {
             if(a[i]<b[j])
@@ -21,14 +67,19 @@ class Solution {
                 ans.push_back(a[i]);
                 i++;
             }
-            // else if(b[j]<=a[i])
-            else
+            else if(b[j]<a[i])
             {
                 ans.push_back(b[j]);
-                if(a[i]==b[j]) i++;
+                j++;
+            }
+            else
+            {
+                ans.push_back(a[i]);
+                i++;
                 j++;
             }
         }
+        
         while(i<a.size())
         {
             ans.push_back(a[i]);
@@ -39,7 +90,6 @@ class Solution {
             ans.push_back(b[j]);
             j++;
         }
-        
         return ans;
     }
 };
