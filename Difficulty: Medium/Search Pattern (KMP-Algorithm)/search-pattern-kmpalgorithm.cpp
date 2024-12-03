@@ -31,7 +31,8 @@ class Solution {
     
                     // Update len to the previous lps value
                     // to avoid reduntant comparisons
-                    len = lps[len - 1];
+                    // len = lps[len - 1];
+                    len = 0;
                 }
                 else {
     
@@ -88,6 +89,7 @@ class Solution {
         return res;
     }
 };
+
 
 //{ Driver Code Starts.
 int main() {
