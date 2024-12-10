@@ -8,52 +8,72 @@ class Solution {
   public:
     void mergeArrays(vector<int>& a, vector<int>& b) {
         int n=a.size(),m=b.size();
-        if(n<m)
+        // if(n<m)
+        // {
+        //     int count=n,req=0;
+        //     int i=0,j=0;
+        //     while(count)
+        //     {
+        //         if(b[j]<a[i])
+        //         {
+        //             j++;
+        //             req++;
+        //         }
+        //         else i++;
+        //         count--;
+        //     }
+        //     while(req)
+        //     {
+        //         j--;
+        //         swap(a[i],b[j]);
+        //         i++;
+        //         req--;
+        //     }
+        // }
+        // else
+        // {
+        //     int count=m,req=0;
+        //     int i=n-1,j=m-1;
+        //     while(count)
+        //     {
+        //         if(a[i]>b[j])
+        //         {
+        //             i--;
+        //             req++;
+        //         }
+        //         else j--;
+        //         count--;
+        //     }
+        //     while(req)
+        //     {
+        //         i++;
+        //         swap(a[i],b[j]);
+        //         j--;
+        //         req--;
+        //     }
+        // }
+        
+        
+        int count=m,req=0;
+        int i=n-1,j=m-1;
+        while(count)
         {
-            int count=n,req=0;
-            int i=0,j=0;
-            while(count)
+            if(i>=0 && a[i]>b[j])
             {
-                if(b[j]<a[i])
-                {
-                    j++;
-                    req++;
-                }
-                else i++;
-                count--;
+                i--;
+                req++;
             }
-            while(req)
-            {
-                j--;
-                swap(a[i],b[j]);
-                i++;
-                // count++;
-                req--;
-            }
+            else j--;
+            count--;
         }
-        else
+        while(req)
         {
-            int count=m,req=0;
-            int i=n-1,j=m-1;
-            while(count)
-            {
-                if(a[i]>b[j])
-                {
-                    i--;
-                    req++;
-                }
-                else j--;
-                count--;
-            }
-            while(req)
-            {
-                i++;
-                swap(a[i],b[j]);
-                j--;
-                // count++;
-                req--;
-            }
+            i++;
+            swap(a[i],b[j]);
+            j--;
+            req--;
         }
+        
         sort(a.begin(),a.end());
         sort(b.begin(),b.end());
         return ;
