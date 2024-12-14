@@ -6,60 +6,44 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    // Function to find floor of x
-    // n: size of vector
-    // x: element whose floor is to find
-    int findFloor(vector<long long> v, long long n, long long x) {
-        if(v[0]>x) return -1;
-        // int low=0,high=n-1;
-        // while(low<=high)
-        // {
-        //     int mid=low+(high-low)/2;
-        //     if(v[mid]==x) return mid;
-        //     if(v[mid]>x) high=mid-1;
-        //     else low=mid+1;
-        // }
-        // return low-1;
-        
-        int l = -1,r = n;
-        while((r-l )> 1)
+    int findFloor(vector<int>& arr, int k) {
+        int n=arr.size();
+        int low=-1,high=n;
+        while(low+1<high)
         {
-            int mid=(l+r)/2;
-            if(v[mid]<x) l=mid;
-            else r=mid; 
+            int mid=low+(high-low)/2;
+            if(arr[mid]<=k) low=mid;
+            else high=mid;
         }
-        // int k=0;
-        // k=r;
-        if(v[r]==x) return r;
-        return r-1;
+        if(low!=-1) return low;
+        return -1;
     }
 };
 
 
 //{ Driver Code Starts.
-
 int main() {
-
-    long long t;
-    cin >> t;
-
+    string ts;
+    getline(cin, ts);
+    int t = stoi(ts);
     while (t--) {
-        long long n;
-        cin >> n;
-        long long x;
-        cin >> x;
 
-        vector<long long> v;
-
-        for (long long i = 0; i < n; i++) {
-            long long temp;
-            cin >> temp;
-            v.push_back(temp);
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
         }
-        Solution obj;
-        cout << obj.findFloor(v, n, x) << endl;
-    }
+        string ks;
+        getline(cin, ks);
+        int k = stoi(ks);
+        Solution ob;
+        int ans = ob.findFloor(arr, k);
 
+        cout << ans << endl;
+    }
     return 0;
 }
 // } Driver Code Ends
