@@ -36,6 +36,7 @@ class Solution {
     }
 };
 
+
 //{ Driver Code Starts.
 int main() {
     int t;
@@ -54,6 +55,7 @@ int main() {
         cin >> key;
         Solution ob;
         cout << ob.search(arr, key) << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
