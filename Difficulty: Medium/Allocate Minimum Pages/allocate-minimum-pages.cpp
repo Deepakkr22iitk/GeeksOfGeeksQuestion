@@ -6,45 +6,64 @@ using namespace std;
 
 
 // } Driver Code Ends
-
-using ll=long long;
 class Solution {
   public:
-    bool isValid(vector<int>& arr, int n, int m, int maxAllowed) {
-        int s = 1, p = 0;
-        for (int i = 0; i < n; i++) {
-            if (arr[i] > maxAllowed)
-                return false;
-            if (p + arr[i] <= maxAllowed) {
-                p += arr[i];
-            } else {
-                s++;
-                p = arr[i];
+    bool pred(vector<int> &arr,int k,int req)
+    {
+        int count=0,n=arr.size();
+        int sum=0;
+        for(int i=0;i<n;++i)
+        {
+            if(arr[i]>req) return false;
+            
+            if((sum+arr[i])<=req)
+            {
+                sum+=arr[i];
+            }
+            else
+            {
+                count++;
+                sum=arr[i];
             }
         }
-        return s <= m;
+        
+        count++; // To cover the last subarray ending with (n-1)
+        
+        return (count<=k);
     }
-    int findPages(vector<int>& arr, int m) {
-        int n = arr.size();
-        if (m > n)
-            return -1;
-        int sum = 0;
-        for (int i = 0; i < n; i++) {
-            sum += arr[i];
-        }
-        int ans = -1, st = 0, end = sum;
-        while (st <= end) {
-            int mid = st + (end - st) / 2;
-            if (isValid(arr, n, m, mid)) {
-                ans = mid;
-                end = mid - 1;
-            } else {
-                st = mid + 1;
+    int findPages(vector<int> &arr, int k) {
+        int n=arr.size();
+        if(k>n) return -1;
+        int mx=arr[0];
+        for(int i=0;i<n;++i) mx=max(mx,arr[i]);
+        
+        if(k==n) return mx;
+        
+        int ans=-1;
+        int low=0;
+        int high=accumulate(arr.begin(),arr.end(),0);
+        // int high=0;
+        // for(int i=0;i<n;i++){
+        //     high+=arr[i];
+        // }
+        
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            if(pred(arr,k,mid))
+            {
+                ans=mid;
+                high=mid-1;
+            }
+            else 
+            {
+                low=mid+1;
             }
         }
         return ans;
     }
 };
+
 
 //{ Driver Code Starts.
 
