@@ -6,53 +6,33 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    vector<int> spirallyTraverse(vector<vector<int> > &m) {
-        int u=0,d=m.size()-1,l=0,r=m[0].size()-1;
-        bool H=true,F=true;
+    vector<int> spirallyTraverse(vector<vector<int> > &mat) {
+        int n=mat.size(),m=mat[0].size();
         vector<int> ans;
-        while(u<=d && l<=r)
+        int sr=0,sc=0,er=n-1,ec=m-1;
+        while(sr<=er && sc<=ec)
         {
-            if(H)
+            for(int j=sc;j<=ec;++j)
             {
-                if(F)
-                {
-                    // going right
-                    for(int i=l;i<=r;i++) ans.push_back(m[u][i]);
-                    u++;
-                    H=false;
-                }
-                else
-                {
-                    // going left
-                    for(int i=r;i>=l;i--) ans.push_back(m[d][i]);
-                    d--;
-                    H=false;
-                }
+                ans.push_back(mat[sr][j]);
             }
-            else
+            sr++;
+            for(int i=sr;i<=er;++i)
             {
-                if(F)
-                {
-                    // goin down
-                    for(int i=u;i<=d;i++) ans.push_back(m[i][r]);
-                    r--;
-                    H=true;
-                    F=false;
-                }
-                else
-                {
-                    // going up
-                    for(int i=d;i>=u;i--) ans.push_back(m[i][l]);
-                    l++;
-                    H=true;
-                    F=true;
-                }
+                ans.push_back(mat[i][ec]);
             }
-            
+            ec--;
+            for(int j=ec;j>=sc && sr<=er;--j)
+            {
+                ans.push_back(mat[er][j]);
+            }
+            er--;
+            for(int i=er;i>=sr && sc<=ec;--i)
+            {
+                ans.push_back(mat[i][sc]);
+            }
+            sc++;
         }
-        
-        // for(auto &x:ans) cout<<x<<" ";
-        
         return ans;
     }
 };
@@ -65,9 +45,10 @@ int main() {
     while (t--) {
         int r, c;
         cin >> r >> c;
-        vector<vector<int>> matrix(r, vector<int>(c, 0));
+        vector<vector<int>> matrix(r);
 
         for (int i = 0; i < r; i++) {
+            matrix[i].assign(c, 0);
             for (int j = 0; j < c; j++) {
                 cin >> matrix[i][j];
             }
@@ -78,6 +59,9 @@ int main() {
         for (int i = 0; i < result.size(); ++i)
             cout << result[i] << " ";
         cout << endl;
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
