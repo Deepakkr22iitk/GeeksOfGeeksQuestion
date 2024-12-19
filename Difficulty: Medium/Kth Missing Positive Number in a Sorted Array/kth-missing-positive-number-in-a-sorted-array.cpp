@@ -12,17 +12,39 @@ class Solution {
   public:
     int kthMissing(vector<int> &arr, int k) {
         int n=arr.size();
-        int last=0,idx=0,miss=0;
-        while(idx<n && miss+(arr[idx]-last-1)<k)
-        {
-            miss+=(arr[idx]-last-1);
-            last=arr[idx];
-            idx++;
-        }
-        return arr[--idx]+k-miss;
+        // int last=0,idx=0,miss=0;
+        // while(idx<n && miss+(arr[idx]-last-1)<k)
+        // {
+        //     miss+=(arr[idx]-last-1);
+        //     last=arr[idx];
+        //     idx++;
+        // }
+        // return arr[--idx]+k-miss;
         
+        if(k<=arr[0]-1) return k;
+        if(k>(arr[n-1]-n)) return arr[n-1]+(k-(arr[n-1]-n));
+        int low=0,high=n-1,ans=-1;
+        while(low<=high)
+        {
+            // if(low==high) 
+            // {
+            //     int prev_diff=(arr[low-1]-low);
+            //     return arr[low-1]+k-prev_diff;
+            // }
+            int mid=low+(high-low)/2;
+            if((arr[mid]-(mid+1))>=k)
+            {
+                ans=mid;
+                high=mid-1;
+            }
+            // if((arr[mid]-mid-1)>k) high=mid-1;
+            else low=mid+1;
+        }
+        // if((arr[ans]-(ans+1))==k) return arr[ans]-1;
+        return arr[ans]-((arr[ans]-(ans+1))-k)-1;
     }
 };
+
 
 //{ Driver Code Starts.
 
