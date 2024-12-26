@@ -7,73 +7,55 @@ using namespace std;
 class Solution {
 
   public:
-    int f_recurr(vector<int> &coins, int sum, int idx)
+    int help(vector<int> &coins,int sum, int idx,vector<vector<int>> &dp)
     {
+        if(sum==0) return 0;
         if(idx==0)
         {
-            if(sum%coins[0]==0) return sum/coins[0];
-            else return INT_MAX / 2;
-        }
-        
-        int not_take=0+f_recurr(coins,sum,idx-1);
-        int take=INT_MAX / 2;
-        if(sum>=coins[idx])
-        {
-            take=1+f_recurr(coins,sum-coins[idx],idx);
-        }
-        
-        return min(take,not_take);
-    }
-    
-    int f_memo(vector<int> &coins, vector<vector<int>> &dp, int sum, int idx)
-    {
-        if(idx==0)
-        {
-            if(sum%coins[0]==0) return sum/coins[0];
-            else return INT_MAX / 2;
+            if(coins[0]!=0 && (sum%coins[0])==0) return sum/coins[0];
+            else return 1e9;
         }
         
         if(dp[idx][sum]!=-1) return dp[idx][sum];
-        
-        int not_take=0+f_memo(coins,dp,sum,idx-1);
-        int take=INT_MAX / 2;
+        int notTaken=0+help(coins,sum,idx-1,dp);
+        int taken=1e9;
         if(sum>=coins[idx])
         {
-            take=1+f_memo(coins,dp,sum-coins[idx],idx);
+            taken=1+help(coins,sum-coins[idx],idx,dp);
         }
-        return dp[idx][sum]=min(take,not_take);
+        return dp[idx][sum]=min(taken,notTaken);
     }
     int minCoins(vector<int> &coins, int sum) {
-        if(sum==0) return 0;
-        
-        
         int n=coins.size();
-        sort(coins.begin(),coins.end());
-        
-        // int res=f_recurr(coins,sum,n-1);
-        // return res == INT_MAX / 2 ? -1 : res;
-        
         vector<vector<int>> dp(n,vector<int>(sum+1,-1));
-        int res=f_memo(coins,dp,sum,n-1);
-        return res == INT_MAX / 2 ? -1 : res;
+        sort(coins.begin(),coins.end());
+        int ans=help(coins,sum,n-1,dp);
+        return ans>=1e9?-1:ans;
     }
 };
 
 //{ Driver Code Starts.
+
 int main() {
-
-    int t;
-    cin >> t;
+    string ts;
+    getline(cin, ts);
+    int t = stoi(ts);
     while (t--) {
-        int v, m;
-        cin >> v >> m;
-
-        vector<int> coins(m);
-        for (int i = 0; i < m; i++)
-            cin >> coins[i];
-
-        Solution ob;
-        cout << ob.minCoins(coins, v) << "\n";
+        string ks;
+        getline(cin, ks);
+        int k = stoi(ks);
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
+        }
+        Solution obj;
+        int res = obj.minCoins(arr, k);
+        cout << res << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
