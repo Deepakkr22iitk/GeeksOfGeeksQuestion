@@ -28,8 +28,8 @@ class Solution {
             {
                 idx[s[i]]=i;
             }
-            if(i==n-1) ans=max(ans,i-start+1);
         }
+        ans=max(ans,n-start);
         return ans;
     }
 };
