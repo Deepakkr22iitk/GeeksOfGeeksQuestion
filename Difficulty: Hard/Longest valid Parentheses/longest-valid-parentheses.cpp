@@ -6,29 +6,25 @@ using namespace std;
 
 
 // } Driver Code Ends
-// User function Template for C++
 
 class Solution {
   public:
-    int maxLength(string& str) {
-        int maxi = 0 ;
-        int left = 0;
-        int right = 0;
-        int n  = str.length();
+    int maxLength(string& s) {
+        int n=s.size(),ans=0;
+        vector<int> dp(n+1,0);
+        stack<int> st;
         for(int i=0;i<n;i++){
-            if(str[i] == '(') left++;
-            else if(str[i] == ')') right++;
-            if(left == right) maxi = max(right+left,maxi);
-            else if(right > left) right=0,left=0;
+            if(s[i]=='(') {
+                st.push(i);
+                continue;
+            }
+            if(st.empty()) continue;
+            int j=st.top(); st.pop();
+            dp[i]=i-j+1;
+            if(j>=1) dp[i]+=dp[j-1];
+            ans=max(ans,dp[i]);
         }
-        left = 0,right=0;
-        for(int i=n-1;i>=0;i--){
-            if(str[i] == '(') left++;
-            else if(str[i] == ')') right++;
-            if(left == right) maxi = max(right+left,maxi);
-            else if(left > right) right=0,left=0;
-        }
-        return maxi;
+        return ans;
     }
 };
 
@@ -43,6 +39,9 @@ int main() {
 
         Solution ob;
         cout << ob.maxLength(S) << "\n";
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
