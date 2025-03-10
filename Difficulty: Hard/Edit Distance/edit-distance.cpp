@@ -1,53 +1,53 @@
 //{ Driver Code Starts
+// Initial Template for C++
 #include <bits/stdc++.h>
 using namespace std;
 
 
 // } Driver Code Ends
+
 class Solution {
   public:
-    int dp[101][101];
-    int solve(int i,int j,string s1,string s2){
-        if(j>=s2.size()){
-            if(i>=s1.size()){
-                return 0;
+    // Function to compute the edit distance between two strings
+    int editDistance(string& s1, string& s2) {
+        int n = s1.size(), m = s2.size();
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                if (i == 0)
+                    dp[i][j] = j; // s1 is empty, insert all characters of s2
+                else if (j == 0)
+                    dp[i][j] = i; // s2 is empty, remove all characters of s1
+                else if (s1[i - 1] == s2[j - 1])
+                    dp[i][j] = dp[i - 1][j - 1]; // Characters match, no operation needed
+                else
+                    dp[i][j] = 1 + min({dp[i - 1][j],     // Remove
+                                        dp[i][j - 1],     // Insert
+                                        dp[i - 1][j - 1]}); // Replace
             }
-            return s1.size()-i;
         }
-        if(i>=s1.size()){
-            if(j>=s2.size())return 0;
-                return s2.size()-j;
-        }
-        if(dp[i][j]!=-1)return dp[i][j];
-        
-        int ans=INT_MAX;
-        if(s1[i]==s2[j])ans=solve(i+1,j+1,s1,s2);
-        else{
-            // case 1 insert a character 
-            ans=solve(i,j+1,s1,s2)+1;
-            // remove a character 
-            ans=min(ans,solve(i+1,j,s1,s2)+1);
-            // Replace any character from the string with any other character.
-            ans=min(ans,solve(i+1,j+1,s1,s2)+1);
-        }  
-        return dp[i][j]=ans;
-    }
-    int editDistance(string str1, string str2) {
-        memset(dp,-1,sizeof(dp));
-       return solve(0,0,str1,str2);
+        return dp[n][m];
     }
 };
 
+
 //{ Driver Code Starts.
+
 int main() {
+
     int T;
     cin >> T;
+    cin.ignore();
     while (T--) {
-        string s, t;
-        cin >> s >> t;
+        string s1;
+        getline(cin, s1);
+        string s2;
+        getline(cin, s2);
         Solution ob;
-        int ans = ob.editDistance(s, t);
+        int ans = ob.editDistance(s1, s2);
         cout << ans << "\n";
+        cout << "~" << endl;
     }
     return 0;
 }
