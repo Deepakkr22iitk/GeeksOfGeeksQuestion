@@ -4,8 +4,8 @@ using namespace std;
 
 
 // } Driver Code Ends
-class Solution {
 
+class Solution {
   public:
     int help(vector<int> &coins,int sum, int idx,vector<vector<int>> &dp)
     {
@@ -33,6 +33,7 @@ class Solution {
         return ans>=1e9?-1:ans;
     }
 };
+
 
 //{ Driver Code Starts.
 
