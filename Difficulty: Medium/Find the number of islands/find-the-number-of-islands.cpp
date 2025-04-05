@@ -2,52 +2,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
+
 class Solution {
   public:
-    // Function to find the number of islands.
-    void bfs(int row, int col, int n, int m, vector<vector<char>> &grid, vector<vector<int>> &vis){
-        vis[row][col] = 1;
-        queue<pair<int, int>> q;
-        q.push({row, col});
+    int countIslands(vector<vector<char>>& grid) {
+        int dx[8] = {0, 0, 1, -1, 1, 1, -1, -1};
+        int dy[8] = {1, -1, 0, 0, -1, 1, -1, 1};
         
-        while(!q.empty()){
-            int row = q.front().first;
-            int col = q.front().second;
-            q.pop();
-            
-            for(int delrow = -1; delrow < 2; delrow++){
-                for(int delcol = -1; delcol < 2; delcol++){
-                    int nrow = row + delrow;
-                    int ncol = col + delcol;
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        
+        int cnt = 0;
+        for(int i= 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                
+                if(grid[i][j] == 'W')
+                    continue;
                     
-                    if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m
-                            && grid[nrow][ncol] == '1' && !vis[nrow][ncol]){
-                        vis[nrow][ncol] = 1;
-                        q.push({nrow, ncol});
+                queue<pair<int,int>>q; 
+                q.push({i, j});
+                
+                grid[i][j] = 'W';
+                cnt += 1;
+                
+                while(!q.empty()){
+                    auto f = q.front();
+                    q.pop();
+                    
+                    for(int k = 0; k < 8; k++){
+                        int nx = f.first + dx[k];
+                        int ny = f.second + dy[k];
+                        
+                        if(nx >= 0 && nx < n && ny >= 0 && ny < m && grid[nx][ny] == 'L'){
+                            q.push({nx, ny});
+                            grid[nx][ny] = 'W';
+                        }
                     }
                 }
             }
         }
         
-    }
-    int numIslands(vector<vector<char>>& grid) {
-        int n = grid.size();
-        int m = grid[0].size();
-        vector<vector<int>> vis(n, vector<int>(m, 0));
-        int cnt = 0;
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < m; j++){
-                if(!vis[i][j] && grid[i][j] == '1'){
-                    //cout<< i <<" " << j << '\n';
-                    cnt++;
-                    bfs(i, j, n, m, grid, vis);
-                }
-            }
-        }
         return cnt;
     }
 };
+
 
 //{ Driver Code Starts.
 int main() {
@@ -63,8 +64,11 @@ int main() {
             }
         }
         Solution obj;
-        int ans = obj.numIslands(grid);
+        int ans = obj.countIslands(grid);
         cout << ans << '\n';
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
