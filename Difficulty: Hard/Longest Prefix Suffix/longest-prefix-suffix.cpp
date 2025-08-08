@@ -1,57 +1,25 @@
-//{ Driver Code Starts
-// Initial template for C++
-
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-
-// User function template for C++
-
 class Solution {
   public:
-    int lps(string str) {
-        int n = str.size();
-        vector<int> kmp(n);
-        
-        int i = 0;
-        for(int j = 1; j < n; j++) {
-            if(str[i] == str[j]) {
-                kmp[j] = ++i;
-            }
-            else {
-                while((--i) >= 0) {
-                    i = kmp[i];
-                    if(str[i] == str[j]) break;
-                }
-                kmp[j] = ++i;
+    int getLPSLength(string &str) {
+        int p = 0;  // Prefix pointer
+        int s = 1;  // Suffix pointer
+        int cnt = 0;  // Count of matching prefix-suffix
+        int pos = 1;  // Starting position of suffix
+        int n = str.size();  // Length of the string
+
+        while(p < n && s < n) {
+            if(str[p] == str[s]) {
+                cnt++;
+                p++;
+                s++;
+            } else {
+                cnt = 0;
+                pos++;
+                s = pos;
+                p = 0;
             }
         }
-        return kmp[n - 1];
+
+        return cnt;
     }
 };
-
-//{ Driver Code Starts.
-
-int main() {
-
-    ios_base::sync_with_stdio(0);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
-    int t;
-    cin >> t;
-    while (t--) {
-        string str;
-        cin >> str;
-
-        Solution ob;
-
-        cout << ob.lps(str) << "\n";
-    }
-
-    return 0;
-}
-
-// } Driver Code Ends
