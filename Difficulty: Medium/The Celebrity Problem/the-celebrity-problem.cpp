@@ -1,24 +1,33 @@
 class Solution {
   public:
     int celebrity(vector<vector<int>>& mat) {
-        int n=mat.size();
-        vector<int> known_by(n);
-        for(int j=0;j<n;++j)
-        {
-            int sum=0;
-            for(int i=0;i<n;++i)
-            {
-                sum+=mat[i][j];
-            }
-            known_by[j]=sum;
-        }
-        for(int i=0;i<n;++i)
-        {
-            if(accumulate(mat[i].begin(),mat[i].end(),0)==1 && known_by[i]==n)
-            {
-                return i;
+        int n = mat.size();
+        int a = 0, b = n - 1;
+    
+        // Step 1: Find potential celebrity
+        while (a < b) {
+            if (mat[a][b] == 1) {
+                // a knows b -> a cannot be celebrity
+                a++;
+            } else {
+                // a does not know b -> b cannot be celebrity
+                b--;
             }
         }
-        return -1;
+    
+        int cand = a; // only candidate left
+    
+        // Step 2: Verify candidate
+        for (int i = 0; i < n; i++) {
+            if (i == cand) continue;
+    
+            // celebrity should not know anyone
+            if (mat[cand][i] == 1) return -1;
+    
+            // everyone should know celebrity
+            if (mat[i][cand] == 0) return -1;
+        }
+    
+        return cand;
     }
 };
