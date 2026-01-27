@@ -1,97 +1,40 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 class Solution {
-#define vc vector<char>
-#define vvc vector<vc>
-#define vb vector<bool>
-#define vvb vector<vb>
-  public:
-    // Function to check if the given position is within matrix boundaries
-    bool checkBoundary(int i, int j, int n, int m) {
-        return (i >= 0 && j >= 0 && i < n && j < m);
-    }
-
-    // DFS function to search for the word in the grid
-    bool helpFind(int i, int j, int idx, int n, int m, vvc &mat, string &word,
-                  set<pair<int, int>> &vis) {
-        // If the entire word is found, return true
-        if (idx == word.size()) return true;
-
-        // If out of boundary, return false
-        if (!checkBoundary(i, j, n, m)) return false;
-
-        // Movement direction: up, right, down, left
-        int dt[] = {-1, 0, 1, 0, -1}; 
-
-        // Mark the current cell as visited
-        vis.insert(make_pair(i, j));
-
-        // Explore all four possible directions
-        for (int k = 0; k < 4; ++k) {
-            int newi = i + dt[k], newj = j + dt[k + 1];
-
-            // Check if we can move to the next cell and continue search
-            if (checkBoundary(newi, newj, n, m) && word[idx] == mat[newi][newj] &&
-                vis.find(make_pair(newi, newj)) == vis.end()) {
-                
-                // Recursively search in the new direction
-                if (helpFind(newi, newj, idx + 1, n, m, mat, word, vis)) 
-                    return true;
-            }
-        }
-
-        // Backtracking: remove the current cell from visited set
-        vis.erase(make_pair(i, j));
+  private:
+    vector<pair<int,int>>dir={{1,0},{-1,0},{0,-1},{0,1}};
+    bool dfs(vector<vector<char>> &mat,string &word,vector<vector<bool>> &visited,int r,int c, int ptr){
+        if(r<0 or c<0 or r>=mat.size() or c>=mat[0].size() or mat[r][c]!=word[ptr] or visited[r][c])return false;
+        //what if all leters of the word is matched
+        if(ptr==word.length()-1)return true;
         
-        return false;
+        //now mark it and run the dfs
+        
+        visited[r][c]=true;
+        for(auto it:dir){
+            if(dfs(mat,word,visited,r+it.first,c+it.second,ptr+1))return true;
+        }
+        
+        visited[r][c]=false;//back track
+        return false;//other wise 
+        
     }
-
-    // Main function to check if the word exists in the grid
-    bool isWordExist(vector<vector<char>>& mat, string& word) {
-        int n = mat.size(), m = mat[0].size();
-
-        // Try to start the search from every cell in the grid
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < m; ++j) {
-                if (word[0] == mat[i][j]) { // Start DFS if first letter matches
-                    set<pair<int, int>> vis; // Stores visited cells
-                    if (helpFind(i, j, 1, n, m, mat, word, vis)) 
-                        return true;
+  public:
+    bool isWordExist(vector<vector<char>> &mat, string &word) {
+        // Code here
+        /*
+        its a clear dfs approach 
+        first find the first match then go all four direction matching next letter of word
+        and make sure to unmark the letter after the dfs call
+        */
+        vector<vector<bool>>visited(mat.size(),vector<bool>(mat[0].size(),false));
+        
+        for(int i=0;i<mat.size();i++){
+            for(int j=0;j<mat[0].size();j++){
+                if(mat[i][j]==word[0]){
+                    bool ans=dfs(mat,word,visited,i,j,0);
+                    if(ans)return ans;
                 }
             }
         }
-        
-        return false; // Word not found
+        return false;
     }
 };
-
-//{ Driver Code Starts.
-int main() {
-    int tc;
-    cin >> tc;
-    while (tc--) {
-        int n, m;
-        cin >> n >> m;
-        vector<vector<char>> mat(n, vector<char>(m, '*'));
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < m; j++)
-                cin >> mat[i][j];
-        string word;
-        cin >> word;
-        Solution obj;
-        bool ans = obj.isWordExist(mat, word);
-        if (ans)
-            cout << "true\n";
-        else
-            cout << "false\n";
-
-        cout << "~"
-             << "\n";
-    }
-    return 0;
-}
-// } Driver Code Ends
