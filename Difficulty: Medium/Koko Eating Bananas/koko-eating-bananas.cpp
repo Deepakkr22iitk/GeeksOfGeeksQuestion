@@ -1,41 +1,27 @@
 class Solution {
   public:
-    bool possible(vector<int> &arr,int n, int k,int mid){
-        int temp=k;
-        for(int i=0;i<n;i++){
-            int quant = arr[i]/mid;
-            int rem = arr[i]%mid;
-            
-            if(quant ==0)   temp-=1;
-            else{
-                if(rem!=0)
-                    temp -= (quant+1);
-                else{
-                    temp -= quant;
-                }
-            }
-            if(temp<0)
-                return false;
+    int possible(int s,vector<int> v)
+    {
+        int n=v.size();
+        int hour=0;
+        for(int i=0;i<n;++i)
+        {
+            hour+=((v[i]+s-1)/s);
         }
-        return true;
-        
+        return hour;
     }
     int kokoEat(vector<int>& arr, int k) {
-        // Code here
-        int end = *max_element(arr.begin(),arr.end());
-        int n = arr.size();
-        int start = 1;
-        int ans=-1;
-        
-        while(start<=end){
-            int mid = start+ (end-start)/2;
-            if(possible(arr,n,k,mid)){
-                ans = mid;
-                end = mid-1;
+        int low=1,high=*max_element(arr.begin(),arr.end());
+        int ans=0;
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            if(possible(mid,arr)<=k)
+            {
+                ans=mid;
+                high=mid-1;
             }
-            else{
-                start = mid+1;
-            }
+            else low=mid+1;
         }
         return ans;
     }
