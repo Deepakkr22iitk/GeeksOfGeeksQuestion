@@ -1,37 +1,31 @@
 class Solution {
   public:
-    int cal_cost(int h,vector<int>&heights,vector<int>&cost){
-        int sum=0;
-        int n=heights.size();
-        for(int i=0;i<n;i++){
-            sum+=cost[i]*abs(heights[i]-h);
+    vector<int> costing(int f,auto h,auto c)
+    {
+        int n=h.size();
+        int mid=0,below=0,above=0;
+        vector<int> ans;
+        for(int i=0;i<n;++i)
+        {
+            mid+=(abs(h[i]-f)*c[i]);
+            below+=(abs(h[i]-(f-1))*c[i]);
+            above+=(abs(h[i]-(f+1))*c[i]);
         }
-        return sum;
+        return ans={below,mid,above};
     }
     int minCost(vector<int>& heights, vector<int>& cost) {
-        // code here
         int n=heights.size();
-        int l=*min_element(heights.begin(),heights.end());
-        int r=*max_element(heights.begin(),heights.end());
-        int ans=INT_MAX;
-        while(l<=r){
-            int mid=l+(r-l)/2;
-            // we cant do partition based on height
-            // we have to do partition based on total cost of that height
-            int h1=mid;
-            int h2=mid+1;
-            int c1=cal_cost(h1,heights,cost);
-            int c2=cal_cost(h2,heights,cost);
-            if(c1>=c2){
-                // so on increasing height cost decreases so we try higher h
-                ans=c2;
-                l=mid+1;
-            }
-            else{
-                ans=c1;
-                r=mid-1;
-            }
+        int low=*min_element(heights.begin(),heights.end());
+        int high=*max_element(heights.begin(),heights.end());
+        
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            
+            vector<int> making=costing(mid,heights,cost);
+            if(making[1]<=making[0] && making[1]<=making[2]) return making[1];
+            if(making[1]<=making[2] && making[0]<making[1]) high=mid-1;
+            else low=mid+1;
         }
-        return ans;
     }
 };
