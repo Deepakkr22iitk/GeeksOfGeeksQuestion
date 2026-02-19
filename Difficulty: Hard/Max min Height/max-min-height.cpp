@@ -1,43 +1,120 @@
 class Solution {
   public:
-    bool isPossible(vector<int>& arr, int k, int w, int target) {
+    // Function to check if it is possible to make
+    // every flower at least minHeight with given days
+    bool isPossible(vector<int> &arr, int k, 
+                       int w, int maxHeight) {
+    
         int n = arr.size();
-        vector<int> diff(n + 2, 0);
-        long long operations = 0, curr_add = 0;
-
+        vector<int> water(n, 0);
+    
         for (int i = 0; i < n; i++) {
-            curr_add += diff[i];
-            long long current_height = arr[i] + curr_add;
-
-            if (current_height < target) {
-                int need = target - current_height;
-                operations += need;
-                if (operations > k) return false;
-
-                curr_add += need;
-                if (i + w < n)
-                    diff[i + w] -= need;
+    
+            // Add previous watering effect
+            if (i > 0) {
+                water[i] = water[i - 1];
+            }
+    
+            int currHeight = arr[i] + water[i];
+    
+            // Remove watering effect beyond window w
+            if (i >= w) {
+                currHeight -= water[i - w];
+            }
+    
+            // If current height is less than required
+            if (currHeight < maxHeight) {
+                int add = maxHeight - currHeight;
+                water[i] += add;
+                k -= add;
+    
+                // If days become negative, not possible
+                if (k < 0) {
+                    return false;
+                }
             }
         }
-
+    
         return true;
     }
+    // Difference Array :- 
+    // helps to apply same changes to a range of array in a constant time
+    int maxMinHeight(vector<int> &arr, int k, int w) {
+        int n=arr.size();
+        
+        // int maxHeight = 0;
 
-    int maxMinHeight(vector<int>& arr, int k, int w) {
-        int low = *min_element(arr.begin(), arr.end());
+        // // Try increasing the minimum height 
+        // // as long as possible
+        // while (true) {
+        //     int days = k;
+        //     vector<int> water(n, 0);
+        //     bool possible = true;
+    
+        //     for (int i = 0; i < n; i++) 
+        //     {
+        //         // Add previous watering effect
+        //         if (i > 0) 
+        //         {
+        //             water[i] = water[i - 1];
+        //         }
+        //         int currHeight = arr[i] + water[i];
+        //         // Remove watering effect beyond window w
+        //         if (i >= w) 
+        //         {
+        //             currHeight -= water[i - w];
+        //         }
+        //         // If current height is less than required
+        //         if (currHeight < maxHeight + 1) 
+        //         {
+        //             int add = maxHeight + 1 - currHeight;
+        //             water[i] += add;
+        //             days -= add;
+        //             // If days become negative, not possible
+        //             if (days < 0) 
+        //             {
+        //                 possible = false;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     // Break if we can't raise height further
+        //     if (!possible) 
+        //     {
+        //         break;
+        //     }
+        //     // Otherwise increase maxHeight
+        //     maxHeight++;
+        // }
+        // return maxHeight;
+        
+        int low = arr[0];
+        for (int i = 1; i < n; i++) 
+        {
+            if (arr[i] < low) 
+            {
+                low = arr[i];
+            }
+        }
+    
         int high = low + k;
-        int answer = low;
-
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (isPossible(arr, k, w, mid)) {
-                answer = mid;
+        int ans = low;
+    
+        // Binary Search on the answer
+        while (low <= high) 
+        {
+            int mid = low + (high - low) / 2;
+            if (isPossible(arr, k, w, mid)) 
+            {
+                ans = max(ans, mid);
                 low = mid + 1;
-            } else {
+            } 
+            else 
+            {
                 high = mid - 1;
             }
         }
-
-        return answer;
+    
+        return ans;
     }
 };
