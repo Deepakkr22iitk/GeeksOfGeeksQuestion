@@ -16,6 +16,6 @@ class Solution {
             } else
                 r = mid - 1;
         }
-        return n - l + 1;
+        return n - r;
     }
 };
