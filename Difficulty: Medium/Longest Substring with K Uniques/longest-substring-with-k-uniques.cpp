@@ -3,7 +3,6 @@ class Solution {
     int longestKSubstr(string &s, int k) {
         unordered_map<char,int> mp;
         int n=s.size();
-        int cnt=0;
         int left=0;
         int maxi=INT_MIN;
         for(int right=0;right<n;++right)
