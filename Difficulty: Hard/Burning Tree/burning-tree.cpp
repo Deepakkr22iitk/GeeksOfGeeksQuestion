@@ -11,28 +11,51 @@ class Node {
     }
 };
 */
+
 class Solution {
   public:
-    void dfs(Node* node, Node* par, map<Node*, Node*>& parent, int target, Node*& startNode){
-    	if(node==NULL) return;
-    	parent[node]=par;
-        if(node->data==target) startNode=node;
-        dfs(node->left, node, parent, target, startNode);
-        dfs(node->right, node, parent, target, startNode);
-    }
-    void dfs2(Node* node, Node* par, int time, int& totalTime, map<Node*, Node*>& parent){
-    	if(node==NULL) return;
-    	totalTime=max(totalTime, time);
-    	if(node->left!=par) dfs2(node->left, node, time+1, totalTime, parent);
-    	if(node->right!=par) dfs2(node->right, node, time+1, totalTime, parent);
-    	if(parent.find(node)!=parent.end() && parent[node]!=par) dfs2(parent[node], node, time+1, totalTime, parent);
+    void burn(
+        int root, 
+        int sec, 
+        int& totalSec, 
+        unordered_map<int, vector<Node*>>& mp, 
+        unordered_map<int, bool>& vis
+    )
+    {
+        if(vis[root]) return;
+        vis[root] = true;
+        totalSec = max(sec, totalSec);
+        for(int i=0;i<mp[root].size();i++) {
+            burn(mp[root][i]->data, sec+1, totalSec, mp, vis);
+        }
     }
     int minTime(Node* root, int target) {
-        map<Node*, Node*> parent;
-        Node* startNode=nullptr;
-        dfs(root, NULL, parent, target, startNode);  // O(V+E)
-        int totalTime=0;
-        dfs2(startNode, NULL, 0, totalTime, parent); // O(V+E)
-        return totalTime;
+        unordered_map<int, vector<Node*>> mp;
+        stack<Node*> st;
+        st.push(root);
+        unordered_map<int, bool> vis;
+        while(!st.empty()) {
+            Node* top = st.top();
+            st.pop();
+            
+            int x = top->data;
+            vis[x] = false;
+            if(top->left != NULL) {
+                mp[x].push_back(top->left);
+                mp[top->left->data].push_back(top);
+                st.push(top->left);
+            }
+            
+            if(top->right != NULL) {
+                mp[x].push_back(top->right);
+                mp[top->right->data].push_back(top);
+                st.push(top->right);
+            }
+        }
+        
+        int totalSec = 0;
+        burn(target, 0, totalSec, mp, vis);
+        
+        return totalSec;
     }
 };
