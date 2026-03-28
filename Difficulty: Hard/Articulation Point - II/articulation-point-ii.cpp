@@ -1,10 +1,3 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-
 class Solution {
   public:
     int timer = 0;
@@ -58,31 +51,3 @@ class Solution {
         return res;
     }
 };
-
-
-//{ Driver Code Starts.
-int main() {
-    int tc;
-    cin >> tc;
-    while (tc--) {
-        int V, E;
-        cin >> V >> E;
-        vector<vector<int>> edges;
-        for (int i = 0; i < E; i++) {
-            int u, v;
-            cin >> u >> v;
-            edges.push_back({u, v});
-        }
-        Solution obj;
-        vector<int> ans = obj.articulationPoints(V, edges);
-        sort(ans.begin(), ans.end());
-        for (auto i : ans)
-            cout << i << " ";
-        cout << "\n";
-
-        cout << "~"
-             << "\n";
-    }
-    return 0;
-}
-// } Driver Code Ends
