@@ -1,54 +1,25 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-
 class Solution {
   public:
     vector<int> singleNum(vector<int>& arr) {
-        vector<int> ans;
-        unordered_map<int,int> mp;
-        for(auto it:arr)
+        int n=arr.size();
+        int xor_all=0;
+        
+        for(int i=0;i<n;++i)
         {
-            mp[it]+=1;
+            xor_all^=arr[i];
         }
-        for(auto it:mp)
+        
+        // Get its last set bit
+        xor_all &= -xor_all;
+        
+        int num1=0,num2=0;
+        for(int i=0;i<n;++i)
         {
-            if(it.second==1)
-            ans.push_back(it.first);
+            if(xor_all & arr[i]) num1^=arr[i];
+            else num2^=arr[i];
         }
-        sort(ans.begin(),ans.end());
-        return ans;
+        
+        if(num2<num1) swap(num1,num2);
+        return {num1,num2};
     }
 };
-
-
-//{ Driver Code Starts.
-int main() {
-    string ts;
-    getline(cin, ts);
-    int t = stoi(ts);
-    while (t--) {
-
-        vector<int> arr;
-        string input;
-        getline(cin, input);
-        stringstream ss(input);
-        int number;
-        while (ss >> number) {
-            arr.push_back(number);
-        }
-
-        Solution ob;
-        vector<int> ans = ob.singleNum(arr);
-        for (auto it : ans) {
-            cout << it << " ";
-        }
-        cout << endl;
-        cout << "~" << endl;
-    }
-    return 0;
-}
-// } Driver Code Ends
