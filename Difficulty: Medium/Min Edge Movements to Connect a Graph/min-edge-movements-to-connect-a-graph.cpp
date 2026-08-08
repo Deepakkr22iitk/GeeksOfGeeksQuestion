@@ -1,0 +1,44 @@
+class Solution {
+  public:
+    void dfs(int u, vector<bool>& visited, unordered_map<int, vector<int>>& adj) {
+        
+        visited[u] = true;
+        
+        for (int& v : adj[u]) {
+            
+            if (!visited[v]) {
+                dfs(v, visited, adj);
+            }
+        }
+    }
+    int minEdgesReq(int n, vector<vector<int>>& edges) {
+        int E = edges.size();
+        int need = n-1; // need minimum edges to connect a graph
+        
+        if (need > E) return -1;
+        
+        unordered_map<int, vector<int>> adj;
+        
+        for (auto& edge : edges) {
+            
+            int u = edge[0];
+            int v = edge[1];
+            
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        
+        vector<bool> visited(n, false);
+        int components = 0;
+        
+        for (int i = 0; i < n; i++) {
+            
+            if (!visited[i]) {
+                components++;
+                dfs(i, visited, adj);
+            }
+        }
+        
+        return components - 1;
+    }
+};
