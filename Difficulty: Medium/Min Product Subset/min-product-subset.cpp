@@ -31,12 +31,12 @@ class Solution {
             return minPos;
         }
         
-        // if(neg%2==1) prod/=maxNeg;
-        // return (int)prod;
-        
-        
-        if(neg%2==1) return (int)prod;
-        prod/=maxNeg;
+        if(neg%2==0) prod/=maxNeg;
         return (int)prod;
+        
+        
+        // if(neg%2==1) return (int)prod;
+        // prod/=maxNeg;
+        // return (int)prod;
     }
 };
