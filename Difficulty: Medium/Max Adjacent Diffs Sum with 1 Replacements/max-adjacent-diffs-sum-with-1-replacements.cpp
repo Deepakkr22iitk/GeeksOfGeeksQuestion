@@ -24,8 +24,20 @@ class Solution {
         {
             contribution[i]=2*(arr[i]-1);
         }
+        // Memoization
         vector<int> dp(n,-1);
         int ans=solve(contribution,0,dp);
         return ans;
+        
+        
+        
+        // Space Optimization
+        // vector<int> dp(n+2,0);
+        // for(int i=n-1;i>=0;i--)
+        // {
+        //     dp[i]=max(contribution[i]+dp[i+2],dp[i+1]);
+        // }
+
+        return dp[0];
     }
 };
