@@ -18,7 +18,6 @@ class Solution {
     // }
     int maxFruits(vector<int>& arr, int m) {
         int n=arr.size();
-        
         if(m==n) return accumulate(arr.begin(),arr.end(),0);
         
         m%=n;
@@ -28,14 +27,19 @@ class Solution {
             ans+=arr[i];
         }
         int now=ans;
-        for(int i=m;i<2*n;++i)
+        // for(int i=m;i<n;++i)
+        // {
+        //     now+=(arr[i]-arr[i-m]);
+        //     ans=max(ans,now);
+        // }
+        int ind=m;
+        while(ind<2*n)
         {
-            now+=(arr[i%n]-arr[(i-m)%n]);
+            now+=(arr[ind%n]-arr[(ind-m)%n]);
             ans=max(ans,now);
+            ind++;
         }
-        // now+=(arr[0]-arr[n-m]);
         return ans;
-        
         // return max(arr[0]+solve(arr,m-1,1,2),solve(arr,m,0,1));
     }
 };
